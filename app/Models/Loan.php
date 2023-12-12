@@ -39,6 +39,16 @@ class Loan extends Model
         'status',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($loan) {
+            // Set outstanding_amount equal to amount if it's not already set
+            $loan->outstanding_amount = $loan->outstanding_amount ?? $loan->amount;
+        });
+    }
+
     /**
      * A Loan belongs to a User
      *
