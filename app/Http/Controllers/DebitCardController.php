@@ -91,6 +91,10 @@ class DebitCardController extends BaseController
      */
     public function destroy(DebitCardDestroyRequest $request, DebitCard $debitCard)
     {
+        if($debitCard->debitCardTransactions()->count() > 0){
+            //raise error
+            return response()->json([], HttpResponse::HTTP_FORBIDDEN);
+        }
         $debitCard->delete();
 
         return response()->json([], HttpResponse::HTTP_NO_CONTENT);
